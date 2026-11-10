@@ -261,10 +261,11 @@ pub(crate) async fn stream_response_from_provider(
         Conversation::new_unvalidated(messages.iter().cloned()).agent_visible_messages();
     let (filtered_messages, _) =
         fix_conversation(Conversation::new_unvalidated(projected_messages));
-    let filtered_messages = Conversation::new_unvalidated(merge_consecutive_messages_for_request(
-        filtered_messages.messages().clone(),
-    ));
+    let mut filtered_messages = Conversation::new_unvalidated(
+        merge_consecutive_messages_for_request(filtered_messages.messages().clone()),
+    );
 
+    super::observation_history::project(filtered_messages.messages_mut());
     // Convert tool messages to text if toolshim is enabled
     let messages_for_provider = if config.toolshim {
         convert_tool_messages_to_text(filtered_messages.messages())

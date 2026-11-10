@@ -10,6 +10,7 @@ pub(crate) mod gen_ai_telemetry;
 mod large_response_handler;
 pub mod mcp_client;
 pub mod moim;
+mod observation_history;
 pub mod platform_extensions;
 #[cfg(feature = "scheduler")]
 pub mod platform_tools;
